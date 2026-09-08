@@ -46,7 +46,7 @@ The dataset contains works in the following languages:
 
 The dataset is the result of a longer process comprising (1) Metadata harvesting of digital collections in the realm of social and economic history between 1750 and 1900, (2) ML-based classification of page-scans for the purpose of identifying full-page historical printed tables; (3) page classification and download of ca. 100,000 page-scans from 1,043 titles; and (4) Criteria-based selection of a subset of ca. 10,000 printed tables. 
 
-Because of its size (ca. 63 GB), we publish the historical tables dataset on Zenodo. The accompanying materials for understanding and using the dataset, such as background information, scripts and statistics, are published on GitHub. For the sake of clarity, some of the accompanying materials (the readme.md file and the datasheet) are published on both platforms.
+Because of its size (54.4 GB), we publish the historical tables dataset on Zenodo. The accompanying materials for understanding and using the dataset, such as background information, scripts and statistics, are published on GitHub. For the sake of clarity, some of the accompanying materials (the readme.md file and the datasheet) are published on both platforms.
 
 Our dataset has the following file structure::
 
