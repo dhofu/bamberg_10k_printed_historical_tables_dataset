@@ -56,14 +56,14 @@ historical_tables_dataset/
 ├── NFDI_234_metadata.csv
 ├── NFDI_234_book_statistics.csv
 ├── images/ (on Zenodo)
-    |   └── images_part1.tar
-    |   └── images_part2.tar
-    |   └── images_part3.tar
-├── manifests/ (on Zenodo)
+    |   └── images_part1.tar (21.3 GB, 3952 images)
+    |   └── images_part2.tar (18.0 GB, 3131 images)
+    |   └── images_part3.tar (15.1 GB, 3552 images)
+├── manifests/ (64.6 MB, on Zenodo)
     |   └── [bsb-identifier_1]_manifest.json
     |   └── [bsb-identifier_2]_manifest.json
     |   └── [bsb-identifier_n]_manifest.json
-├── classification_logs/ (on Zenodo)
+├── classification_logs/ (7.20 MB, on Zenodo)
     |   └── [bsb-identifier_1]_classification_log.jsonl
     |   └── [bsb-identifier_1]_classification_log.jsonl
     |...
@@ -81,15 +81,14 @@ processing_documentation/
 ├── legacy_harvesting_script.py
 ├── oai_harvesting_results.json
 ├── training_script.py
-├── training_data/
-    |   ├── Table/
-    |   ├── Text/
-    |   ├── Text_and_Table/
-    |   ├── Title/
-├── classification_model.keras
 ├── image_harvesting_script.py
 ├── NFDI_234_bsb_identifiers.txt
 ├── flatten_optimize_tar.ps1
+training_data/
+    ├── Table/
+    ├── Text/
+    ├── Text_and_Table/
+    ├── Title/
 ```
 
 ### Metadata harvesting
@@ -98,7 +97,7 @@ Metadata harvesting was done for the purpose of obtaining a large pool of potent
 Harvesting was conducted on the set 'all' (now no longer available) of the BSB digital collections. The process was divided into several steps. One book metadata pattern was selected per run; the year of the last update of the record was used to further divide the process into manageable steps. In the meantime, this OAI-PMH is no longer in use. It has been replaced with a new OAI endpoint and a different configuration of the sets in the digital collections. A [legacy script](processing_documentation/legacy_harvesting_script.py) is published as documentation of the process described here. The results of our metadata harvesting effort are published in [a JSON file](processing_documentation/oai_harvesting_results) on Github. 
 
 ### Page Classifier for Finding Tables
-We trained an ML-algorithm to find tables in large amounts of page-scans of free-of-copyright printed works from the eighteenth and nineteenth centuries. The [training script](training_script.py) as well as the [training data](training_data) are stored in the folder [processing_documentation](processing_documentation). The training data consists of 1,384 page-scans belonging to 4 classes ([Title](training_data/Title), [Text](training_data/Text), [Table](training_data/Table), [Text_and_Table](training_data/Text_and_Table)). The classification was done manually. 1,108 files were used for training; 276 for validation during model training. The resulting [classification model](classification_model.keras) is stored as well. 
+We trained an ML-algorithm to find tables in large amounts of page-scans of free-of-copyright printed works from the eighteenth and nineteenth centuries. The [training script](training_script.py) is stored in the folder [processing_documentation](processing_documentation). The [training data](training_data) are stored in a separate folder. The training data consists of 1,384 page-scans belonging to 4 classes ([Title](training_data/Title), [Text](training_data/Text), [Table](training_data/Table), [Text_and_Table](training_data/Text_and_Table)). The classification was done manually. 1,108 files were used for training; 276 for validation during model training. The resulting Keras classification model (> 131 MB) is published on Zenodo. 
 
 ### Image Classification and Download
 We implemented an [image classification and download script](processing_documentation/image_harvesting_script.py) for processing the records for which metadata were harvested in the previous step. The script examines and classifies each page using the page classifier and downloads only pages that were classified as `Table` or as `Text_and_Table`. The process was carried out until a margin of 100,000 downloaded page scans was reached. This happened after only 1,043 out of 8,985 harvested books were processed, indicating that there are many more tables to be found in the digital collections. For the current stage of this project, the size of 100,000 was deemed sufficient. 
