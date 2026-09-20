@@ -2,7 +2,7 @@
 
 This repository contains the scripts that were used for creating a dataset of ca. 10,000 full-page printed tables in the field of social and economic history, published between 1755 and 1899. The scripts were created in dialogue with Claude Sonnet 3.5, Claude Opus 4.7 and 4.8, and Claude Opus 5.
 
-The Bamberg 10k Printed Historical Tables Dataset is accessible on [Zenodo](10.5281/zenodo.22251282). 
+The Bamberg 10k Printed Historical Tables Dataset is accessible on [Zenodo](https://doi.org/10.5281/zenodo.22251282). 
 
 The dataset consists of 56 tar-files (54.4 GB), metadata files, and processing documentation and scripts.
 
