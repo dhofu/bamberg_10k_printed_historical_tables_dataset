@@ -10,8 +10,8 @@ import xmltodict
 # Local deployment of mongoDB Community Edition
 uri = "mongodb://localhost:27017/"
 client = MongoClient(uri)
-database = client["oai_test"]
-collection = database["records"]
+database = client["oai_test"] # rename as needed
+collection = database["records"] # rename as needed
 
 # %%
 # Parse single XML record and convert to dict

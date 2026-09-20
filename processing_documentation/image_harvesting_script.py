@@ -24,7 +24,7 @@ MANIFEST_URL = "https://api.digitale-sammlungen.de/iiif/presentation/v2"
 model = tf.keras.models.load_model('classification_model.keras')
 
 # %%
-# File path - replace with path to TXT file containing bsb-identifiers of selected books
+# File path - replace with path to TXT file containing bsb-identifiers of selected books (see folder 'historical_tables_dataset)
 file_path = 'NFDI_234_bsb_identifiers.txt'
 
 # %%
@@ -62,7 +62,7 @@ try:
         sampled_values = random.sample(range(1, len(canvases) + 1), sample_size)
         sampled_values.sort()
 
-        output_dir = rf"\\uni-bamberg\team\table-recognition-2.digihist\{book_id}" # change if necessary
+        output_dir = rf"path_to_folder\{book_id}" # rename as needed
         selected_pages = sampled_values
         size = "full" # alternative 'pct:50'
         save_manifest = False # change to False if necessary
@@ -81,7 +81,7 @@ try:
 
         # Download pages
         for page_num, identifier in zip(selected_pages, tqdm(identifiers, desc="Downloading pages")):
-            output_path = os.path.join(output_dir, f"page_{page_num:04d}.tif") # change to tif, jpg or png
+            output_path = os.path.join(output_dir, f"page_{page_num:04d}.png") # change to tif, jpg or png as needed
 
             # Skip if file already exists
             if os.path.exists(output_path):
@@ -89,7 +89,7 @@ try:
                 
             try:
                 # Construct IIIF URL and get image
-                image_url = f"{BASE_URL}/{identifier}/full/{size}/0/default.tif" # change to jpg, tif or png
+                image_url = f"{BASE_URL}/{identifier}/full/{size}/0/default.png" # change to jpg, tif or png as needed
                 image_response = requests.get(image_url)
                 image_response.raise_for_status()
                 # When loaded directly as done below, the following line is not necessary, but we do need it to save the image below
@@ -124,36 +124,36 @@ try:
                 }
                     
                 # Append to log file using async write
-                log_file = os.path.join(output_dir, 'classification_log_tif.jsonl') # add _tif, _png or _jpg as necessary
+                log_file = os.path.join(output_dir, 'classification_log.jsonl')
                 with open(log_file, 'a') as f:
                     f.write(json.dumps(log_entry) + '\n')
 
                 # Save if the image is classified as a Table
                 if class_names[predicted_class] == 'Table':
                     # Create a directory for tables if it doesn't exist
-                    tables_dir = os.path.join(os.path.dirname(output_path), 'tables_tif')
+                    tables_dir = os.path.join(os.path.dirname(output_path), 'tables_png')
                     os.makedirs(tables_dir, exist_ok=True)
                         
                     # Generate filename with page number and confidence score
-                    table_filename = f"{book_id}_{page_num}_conf_{confidence:.2f}.tif" # change to tif, jpg or png
+                    table_filename = f"{book_id}_{page_num}_conf_{confidence:.2f}.png" # change to tif, jpg or png as needed
                     table_path = os.path.join(tables_dir, table_filename)
                         
                     # Save the table image
-                    image.save(table_path, "TIFF") # change to TIFF, JPEG or PNG; specify quality=100 for JPEG
+                    image.save(table_path, "PNG") # change to TIFF, JPEG or PNG as needed; specify quality=100 for JPEG
                     print(f"Saved table image: {table_filename}")
 
                 # Save if the image is classified as Text and Table
                 elif class_names[predicted_class] == 'TextAndTable':
                     # Create a directory for text-and-tables if it doesn't exist
-                    text_and_tables_dir = os.path.join(os.path.dirname(output_path), 'text_and_tables_tif')
+                    text_and_tables_dir = os.path.join(os.path.dirname(output_path), 'text_and_tables_png')
                     os.makedirs(text_and_tables_dir, exist_ok=True)
                         
                     # Generate filename with page number and confidence score
-                    text_and_table_filename = f"{book_id}_{page_num}_conf_{confidence:.2f}.tif" # change to tif, jpg or png
+                    text_and_table_filename = f"{book_id}_{page_num}_conf_{confidence:.2f}.png" # change to tif, jpg or png
                     text_and_table_path = os.path.join(text_and_tables_dir, text_and_table_filename)
                         
                     # Save the text-and-table image
-                    image.save(text_and_table_path, "TIFF") # change to TIF, JPEG or PNG; specify quality=100 for JPEG
+                    image.save(text_and_table_path, "PNG") # change to TIF, JPEG or PNG as needed; specify quality=100 for JPEG
                     print(f"Saved text-and-table image: {text_and_table_filename}")
 
                 else:
@@ -167,7 +167,7 @@ try:
         # Create filtered manifest if requested
         if save_manifest:
             # Save manifest
-            manifest_path = os.path.join(output_dir, 'manifest_tif.json')
+            manifest_path = os.path.join(output_dir, 'manifest.json')
             with open(manifest_path, 'w', encoding='utf-8') as f:
                 json.dump(manifest, f, indent=2)
 
