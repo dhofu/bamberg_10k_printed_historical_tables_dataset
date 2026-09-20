@@ -2,7 +2,7 @@
 
 This repository contains the scripts that were used for creating a dataset of ca. 10,000 full-page printed tables in the field of social and economic history, published between 1755 and 1899. The scripts were created in dialogue with Claude Sonnet 3.5, Claude Opus 4.7 and 4.8, and Claude Opus 5.
 
-The Bamberg 10k Printed Historical Tables Dataset is accessible on [Zenodo](10.5281/zenodo.22251282). 
+The Bamberg 10k Printed Historical Tables Dataset is accessible on [Zenodo](https://doi.org/10.5281/zenodo.22251282). 
 
 The dataset consists of 56 tar-files (54.4 GB), metadata files, and processing documentation and scripts.
 
@@ -80,13 +80,12 @@ historical_tables_dataset/
 ├── classification_logs/ (7.20 MB, on Zenodo)
     |   └── [bsb-identifier_1]_classification_log.jsonl
     |   └── [bsb-identifier_1]_classification_log.jsonl
-    |...
     ├── └── [bsb-identifier_n]_classification_log.jsonl
 ├── README.md
 ├── Datasheet_for_Bamberg_10k_Printed_Historical_Tables_Dataset.md
 ```
 
-During the image harvesting process, each book was stored as a separate folder named after the book's bsb-identifier. The dataset published on Zenodo contains all 10,635 PNG images from these 234 folders in a lossless and format preserving compression, merged into three flattened TAR-files. The accompanying harvesting manifest and classification log files per book are stored in 2 additional TAR-files. The harvesting `*_manifest.json` contains details about the source of each image and its license. The `*_classification_log.jsonl` contains page-wise information about its classification by the ML-classification algorithm. 
+During the image harvesting process, each book was stored as a separate folder named after the book's bsb-identifier. The dataset published on Zenodo contains all 10,635 PNG images from these 234 folders in a lossless and format preserving compression, merged into 54 TAR-files with a size range from 20 MB to ca. 1.5 GB. The accompanying harvesting manifest and classification log files per book are stored in 2 additional TAR-files. The harvesting `*_manifest.json` contains details about the source of each image and its license. The `*_classification_log.jsonl` contains page-wise information about its classification by the ML-classification algorithm. 
 
 ## Processing Documentation
 
@@ -107,7 +106,7 @@ Metadata harvesting was done for the purpose of obtaining a large pool of potent
 Harvesting was conducted on the set 'all' (now no longer available) of the BSB digital collections. The process was divided into several steps. One book metadata pattern was selected per run; the year of the last update of the record was used to further divide the process into manageable steps. In the meantime, this OAI-PMH is no longer in use. It has been replaced with a new OAI endpoint and a different configuration of the sets in the digital collections. A [legacy script](processing_documentation/legacy_harvesting_script.py) is published as documentation of the process described here. The results of our metadata harvesting effort are published in [a JSON file](processing_documentation/oai_harvesting_results.json) on Github. 
 
 ### Image Classification and Download
-We implemented an [image classification and download script](processing_documentation/image_harvesting_script.py) for processing the records for which metadata were harvested in the previous step. The script examines and classifies each page using the page classifier and downloads only pages that were classified as `Table` or as `Text_and_Table`. The process was carried out until a margin of 100,000 downloaded page scans was reached. This happened after only 1,043 out of 8,985 harvested books were processed, indicating that there are many more tables to be found in the digital collections. For the current stage of this project, the size of 100,000 was deemed sufficient. 
+We implemented an [image classification and download script](processing_documentation/image_harvesting_script.py) for processing the records for which metadata were harvested in the previous step. The script examines and classifies each page using an [optical page classifier developed for the project](https://github.com/dhofu/page_classifier_for_finding_tables) and downloads only pages that were classified as `Table` or as `Text_and_Table`. The process was carried out until a margin of 100,000 downloaded page scans was reached. This happened after only 1,043 out of 8,985 harvested books were processed, indicating that there are many more tables to be found in the digital collections. For the current stage of this project, the size of 100,000 was deemed sufficient. 
 
 ### Selection of a 10k Subset
 In the final step, a subset of ca. 10,000 printed tables was created from the 100k collection of harvested images. We selected all 234 works containing 3 to 100 full-page table scans with a 1.0 confidence score. This limit was set to increase the diversity of the dataset. A [list of BSB identifiers](processing_documentation/NFDI_234_bsb_identifiers.txt) for all 234 books in the dataset is provided. It can be used to reproduce the dataset with the [image harvesting script](processing_documentation/image_harvesting_script.py).
@@ -115,7 +114,7 @@ In the final step, a subset of ca. 10,000 printed tables was created from the 10
 ### Preparation of Zenodo upload
 Images were originally stored in one folder per harvested book during the harvesting process. To facilitate upload to Zenodo, the images were stored in large, flattened TAR-files using a Powershell script that flattens the folders, optimizes file size of the PNGs with `oxipng` and stores the images in a TAR file. The [Powershell script](processing_documentation/flatten_optimize_tar_v3.ps1) is available on GitHub.
 
-While the actual upload to Zenodo was complicated by recurring network accessibility issues, the `.tar`-files were split using a splitting script and upload was managed via the Zenodo API using a script that allowed for several retries (zenodo_upload.py). Both scripts were developed with Claude Opus 5.
+While the actual upload to Zenodo was complicated by recurring network accessibility issues, the `.tar`-files were split using a [splitting script](processing_documentation/tarsplit.py) and upload was managed via the Zenodo API using a [script](processing_documentation/zenodo_upload.ipynb) that allowed for several retries. Both scripts were developed with Claude Opus 5.
 
 ## Future Work
 Work on the Bamberg 10k Printed Historical Tables Dataset is part of a large initiative that aims to improve historical table recognition. Despite impressive recent advances, stimulated not at the least by rapid increases in the capabilities of LLMs and VLMs, obtaining high quality machine-readable transcriptions of historical tables is still an issue. This is especially true for handwritten tables, but printed historical tables as well continue to present issues due to complex and irregular table structures, bad scan quality, typographical issues etc. 
