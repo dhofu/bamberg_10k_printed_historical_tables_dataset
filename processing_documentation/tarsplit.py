@@ -12,6 +12,8 @@ Usage:
 Examples:
     tarsplit.py backup.tar.gz --size 2G
     tarsplit.py backup.tar --parts 5 --out-dir /tmp/chunks
+
+CLI script produces with Claude Opus 5.
 """
 
 import argparse
