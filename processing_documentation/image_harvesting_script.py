@@ -14,27 +14,23 @@ import datetime
 import tensorflow as tf
 import numpy as np
 
-# %%
 # APIs for working with IIIF
 BASE_URL = "https://api.digitale-sammlungen.de/iiif/image/v2"
 MANIFEST_URL = "https://api.digitale-sammlungen.de/iiif/presentation/v2"
 
-# %%
 # Load the classification model
+# The model file is stored on Zenodo: https://zenodo.org/records/22857742
 model = tf.keras.models.load_model('classification_model.keras')
 
-# %%
-# File path - replace with path to TXT file containing bsb-identifiers of selected books (see folder 'historical_tables_dataset)
-file_path = 'NFDI_234_bsb_identifiers.txt'
+# File path - replace with path to TXT file containing bsb-identifiers of selected books
+file_path = 'NFDI_234_bsb_identifiers.txt' # stored in the folder 'historical_tables_dataset'
 
-# %%
 with open(file_path, 'r', encoding='utf-8') as file:
     data = file.readlines()
     print(len(data))
     book_id = data[0].strip()
     print(book_id)
 
-# %%
 # Initialize counter
 processed = 0
 book_count = 0
